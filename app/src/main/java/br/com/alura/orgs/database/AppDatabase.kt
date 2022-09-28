@@ -16,7 +16,7 @@ import br.com.alura.orgs.model.Usuario
         Produto::class,
         Usuario::class
     ],
-    version = 1,
+    version = 2,//update da versao demonstrando alteração do schema
     exportSchema = true
 )
 @TypeConverters(Converters::class)
@@ -35,9 +35,10 @@ abstract class AppDatabase : RoomDatabase() {
                 context,
                 AppDatabase::class.java,
                 "orgs.db"
-            ).build().also {
-                db = it
-            }
+            )
+            //exclui a necessidade de ter uma migration e vai destruir toda a base e reconstruir
+            .fallbackToDestructiveMigration() //nao e uma boa pratica utilizar essa opção
+            .build().also { db = it  }
         }
     }
 }
