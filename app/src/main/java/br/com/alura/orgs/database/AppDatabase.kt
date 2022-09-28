@@ -36,7 +36,7 @@ abstract class AppDatabase : RoomDatabase() {
                 "orgs.db"
             )
             //exclui a necessidade de ter uma migration e vai destruir toda a base e reconstruir
-            .fallbackToDestructiveMigration() //nao e uma boa pratica utilizar essa opção
+//            .fallbackToDestructiveMigration() //nao e uma boa pratica utilizar essa opção
             .build().also { db = it  }
         }
     }
