@@ -7,6 +7,6 @@ import br.com.alura.orgs.model.Usuario
 @Dao
 interface UsuarioDao {
 
-    @Insert
+    @Insert //vamos utilizar suspend fun para coroutines
     suspend fun salva(usuario: Usuario)
 }

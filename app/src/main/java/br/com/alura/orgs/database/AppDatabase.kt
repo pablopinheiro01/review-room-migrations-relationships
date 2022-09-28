@@ -24,6 +24,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun produtoDao(): ProdutoDao
 
+    //Novo DAO de usuario
     abstract fun usuarioDao(): UsuarioDao
 
     companion object {
