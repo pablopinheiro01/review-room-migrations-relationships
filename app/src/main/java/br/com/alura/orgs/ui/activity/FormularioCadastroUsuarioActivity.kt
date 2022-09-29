@@ -16,9 +16,9 @@ class FormularioCadastroUsuarioActivity : AppCompatActivity() {
         ActivityFormularioCadastroUsuarioBinding.inflate(layoutInflater)
     }
 
-//    private val dao by lazy{
-//        AppDatabase.instancia(this).usuarioDao()
-//    }
+    private val dao by lazy{
+        AppDatabase.instancia(this).usuarioDao()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,7 @@ class FormularioCadastroUsuarioActivity : AppCompatActivity() {
             Log.i("CadastroUsuario", "onCreate: $novoUsuario")
             lifecycleScope.launch {
                 try {
-//                    dao.salva(novoUsuario)
+                    dao.salva(novoUsuario)
                     finish()
                 } catch (e:Exception) {
                     Log.e(TAG, "configuraBotaoCAdastrar: $e")

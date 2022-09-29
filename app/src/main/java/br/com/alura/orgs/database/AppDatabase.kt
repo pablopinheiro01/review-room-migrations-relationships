@@ -13,10 +13,10 @@ import br.com.alura.orgs.model.Usuario
 
 @Database(
     entities = [
-        Produto::class
-//        Usuario::class
+        Produto::class,
+        Usuario::class
     ],
-    version = 1,//update da versao demonstrando alteração do schema
+    version = 2,//update da versao demonstrando alteração do schema
     exportSchema = true
 )
 @TypeConverters(Converters::class)
@@ -24,7 +24,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun produtoDao(): ProdutoDao
 
-//    abstract fun usuarioDao(): UsuarioDao
+    abstract fun usuarioDao(): UsuarioDao
 
     companion object {
         @Volatile
@@ -35,8 +35,7 @@ abstract class AppDatabase : RoomDatabase() {
                 AppDatabase::class.java,
                 "orgs.db"
             )
-            //exclui a necessidade de ter uma migration e vai destruir toda a base e reconstruir
-//            .fallbackToDestructiveMigration() //nao e uma boa pratica utilizar essa opção
+            .addMigrations(MIGRATION_1_2)//adicionado migration criada
             .build().also { db = it  }
         }
     }
