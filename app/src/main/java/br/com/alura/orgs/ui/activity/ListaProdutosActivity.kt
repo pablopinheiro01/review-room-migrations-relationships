@@ -40,19 +40,18 @@ class ListaProdutosActivity : AppCompatActivity() {
         configuraRecyclerView()
         configuraFab()
         lifecycleScope.launch {
-            launch{
-                //envolvido em outro launch devido o Flow travar a thread aguardando atualizacoes
-                produtoDao.buscaTodos().collect { produtos ->
-                    adapter.atualiza(produtos)
-                }
-            }
 
             launch{ //o collect do DataStore sendo executado em uma linha diferente do collect do DAO
                 dataStore.data.collect { preferences ->
                      preferences[usuarioPreferences]?.let{ usuarioId ->
                          launch { //executando em uma thread diferente um novo collect
                              usuarioDao.buscaPorId(usuarioId).collect {
-                                 Log.i("LISTAPRODUTOS", "usuario: $it")
+                                 launch{
+                                     //envolvido em outro launch devido o Flow travar a thread aguardando atualizacoes
+                                     produtoDao.buscaTodos().collect { produtos ->
+                                         adapter.atualiza(produtos)
+                                     }
+                                 }
                              }
                          }
                      } ?: vaiParaLogin()
