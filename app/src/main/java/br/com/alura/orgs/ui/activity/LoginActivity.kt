@@ -45,6 +45,7 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                   vaiPara(ListaProdutosActivity::class.java)
+                    finish()
                 } ?:
                 Toast.makeText(this@LoginActivity, "Falha na autenticaçao", Toast.LENGTH_LONG).show()
             }
