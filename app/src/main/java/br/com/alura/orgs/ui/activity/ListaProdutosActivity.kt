@@ -15,7 +15,11 @@ import br.com.alura.orgs.extensions.vaiPara
 import br.com.alura.orgs.preferences.dataStore
 import br.com.alura.orgs.preferences.usuarioPreferences
 import br.com.alura.orgs.ui.recyclerview.adapter.ListaProdutosAdapter
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
 
 
@@ -40,24 +44,35 @@ class ListaProdutosActivity : AppCompatActivity() {
         configuraRecyclerView()
         configuraFab()
         lifecycleScope.launch {
-
             launch{ //o collect do DataStore sendo executado em uma linha diferente do collect do DAO
-                dataStore.data.collect { preferences ->
-                     preferences[usuarioPreferences]?.let{ usuarioId ->
-                         launch { //executando em uma thread diferente um novo collect
-                             usuarioDao.buscaPorId(usuarioId).collect {
-                                 launch{
-                                     //envolvido em outro launch devido o Flow travar a thread aguardando atualizacoes
-                                     produtoDao.buscaTodos().collect { produtos ->
-                                         adapter.atualiza(produtos)
-                                     }
-                                 }
-                             }
-                         }
-                     } ?: vaiParaLogin()
-                }
+                verificaUsuarioLogado()
             }
 
+        }
+    }
+
+    private suspend fun verificaUsuarioLogado() {
+        dataStore.data.collect { preferences ->
+            preferences[usuarioPreferences]?.let { usuarioId ->
+                buscaUsuario(usuarioId)
+            } ?: vaiParaLogin()
+        }
+    }
+
+    private fun buscaUsuario(usuarioId: String) {
+        lifecycleScope.launch {
+            usuarioDao.buscaPorId(usuarioId).firstOrNull()?.let {
+                launch {
+                    //envolvido em outro launch devido o Flow travar a thread aguardando atualizacoes
+                    buscaProdutosUsuario()
+                }
+            }
+        }
+    }
+
+    private suspend fun buscaProdutosUsuario() {
+        produtoDao.buscaTodos().collect { produtos ->
+            adapter.atualiza(produtos)
         }
     }
 
@@ -70,13 +85,17 @@ class ListaProdutosActivity : AppCompatActivity() {
         when(item.itemId){
             R.id.menu_sair_do_app -> {
                 lifecycleScope.launch {
-                    dataStore.edit { preferences ->
-                        preferences.remove(usuarioPreferences)
-                    }
+                    deslogaUsuario()
                 }
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private suspend fun deslogaUsuario() {
+        dataStore.edit { preferences ->
+            preferences.remove(usuarioPreferences)
+        }
     }
 
     private fun vaiParaLogin() {
