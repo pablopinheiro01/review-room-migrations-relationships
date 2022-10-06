@@ -67,6 +67,10 @@ class ListaProdutosActivity : UsuarioBaseActivity() {
                     deslogaUsuario()
                 }
             }
+            R.id.menu_detalhe_do_usuario -> {
+                //vai para tela do usuario
+                vaiPara(DetalheDoUsuarioActivity::class.java)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
