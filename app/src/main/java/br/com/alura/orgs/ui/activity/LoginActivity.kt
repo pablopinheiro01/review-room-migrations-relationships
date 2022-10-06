@@ -1,6 +1,7 @@
 package br.com.alura.orgs.ui.activity
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,7 @@ import br.com.alura.orgs.extensions.toast
 import br.com.alura.orgs.extensions.vaiPara
 import br.com.alura.orgs.preferences.dataStore
 import br.com.alura.orgs.preferences.usuarioPreferences
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
@@ -39,7 +41,6 @@ class LoginActivity : AppCompatActivity() {
             val senha = binding.activityLoginSenha.text.toString()
             Log.i("LoginActivity", "onCreate: $usuario - $senha")
             autentica(usuario, senha)
-
         }
     }
 
@@ -50,7 +51,6 @@ class LoginActivity : AppCompatActivity() {
                 dataStore.edit { preferences ->
                     preferences[usuarioPreferences] = usuario.id
                 }
-
                 vaiPara(ListaProdutosActivity::class.java)
                 finish()
             } ?: toast("Falha na autenticaçao")
