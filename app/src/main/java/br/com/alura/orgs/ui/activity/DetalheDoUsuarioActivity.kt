@@ -22,6 +22,7 @@ class DetalheDoUsuarioActivity : UsuarioBaseActivity() {
             .filterNotNull()
             .collect {
                 binding.activityDeatlheUsuarioNome.text = it.nome
+                binding.activityDetalheUsuarioId.text = it.id
             }
         }
 
