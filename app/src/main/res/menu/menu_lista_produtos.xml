@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/menu_todos_produtos"
+        android:icon="@drawable/ic_baseline_folder_open_24"
+        android:title="Mostrar todos os itens"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/menu_detalhe_do_usuario"
         android:icon="@drawable/ic_baseline_people_24"
         android:title="Detalhes do usuario logado"

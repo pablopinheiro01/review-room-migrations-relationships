@@ -22,6 +22,7 @@
         <activity android:name=".ui.activity.UsuarioBaseActivity" />
         <activity android:name=".ui.activity.FormularioProdutoActivity" />
         <activity android:name=".ui.activity.DetalheDoUsuarioActivity" />
+        <activity android:name=".ui.activity.TodosProdutosActivity" />
         <activity android:name=".ui.activity.ListaProdutosActivity"
             android:exported="true">
             <intent-filter>

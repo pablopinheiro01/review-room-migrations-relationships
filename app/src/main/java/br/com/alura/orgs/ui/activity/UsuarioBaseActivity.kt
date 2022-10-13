@@ -58,7 +58,9 @@ abstract class UsuarioBaseActivity : AppCompatActivity() {
     }
 
 
-
+    protected suspend fun buscaTodos(): Flow<List<Usuario>> {
+        return usuarioDao.buscaTodos()
+    }
 
 
 }
